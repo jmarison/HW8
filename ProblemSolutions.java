@@ -1,6 +1,6 @@
 /******************************************************************
  *
- *   ADD YOUR NAME / SECTION NUMBER HERE
+ *   Jacob Marison / 272 002
  *
  *   This java file contains the problem solutions of canFinish and
  *   numGroups methods.
@@ -82,9 +82,53 @@ class ProblemSolutions {
                                         prerequisites); 
 
         // ADD YOUR CODE HERE - ADD YOUR NAME / SECTION AT TOP OF FILE
-        return false;
+        //make graph check for cycle to prevent the [[1,0],[0,1]] example
+        //Get depth or length whatever its called from the root node (the furthest class to the RIGHT) and then do a depth first search
+        //to find if there is a valid path within the # of exams
+        boolean possible = true;
 
+        boolean completed[] = new boolean[numNodes];
+        boolean exploring[] = new boolean[numNodes];
+
+        for(int i = 0; i < numNodes; i++) {
+
+            if(!completed[i]) {
+                Stack<Integer> verticesFound = new Stack<>();
+                verticesFound.push(i);
+
+                while(!verticesFound.isEmpty()) {
+                    int current = verticesFound.peek();
+
+                    if(!completed[current] && !exploring[current]) {
+                        exploring[current] = true;
+
+                        for(int n : adj[current]) {
+
+                            if(exploring[n]) {
+                                possible = false;
+                                return possible;
+
+                            }
+                            if (!completed[n]) {
+                                verticesFound.push(n);
+                            }
+                        }
+                    } else if(exploring[current]) {
+                        exploring[current] = false;
+                        completed[current] = true;
+                        verticesFound.pop();
+                    } else {
+                        verticesFound.pop();
+                    }
+
+
+                }
+            }
+        }
+        return possible;
     }
+
+
 
 
     /**
@@ -142,7 +186,7 @@ class ProblemSolutions {
      *   Output: 2
      *   Explanation: The Adjacency Matrix defines an
      *   undirected graph of 3 nodes (indexed 0 to 2).
-     *   Where nodes 0 and 1 aee connected, and node 2
+     *   Where nodes 0 and 1 are connected, and node 2
      *   is NOT connected. This forms two groups of
      *   nodes.
      *
@@ -192,7 +236,28 @@ class ProblemSolutions {
 
         // YOUR CODE GOES HERE - you can add helper methods, you do not need
         // to put all code in this method.
-        return -1;
+        boolean[] visited = new boolean[numNodes];
+        int groups = 0;
+
+        for(i = 0; i < numNodes; i++) {
+            if(!visited[i]) {
+                recurDepth(i, graph, visited);
+                groups++;
+            }
+
+        }
+
+        return groups;
+    }
+    private void recurDepth(int node, Map<Integer,List<Integer>> graph, boolean[] visited) {
+        visited[node] = true;
+
+        List<Integer> neighs = graph.getOrDefault(node, new ArrayList<>());
+        for(int n : neighs) {
+            if(!visited[n]) {
+                recurDepth(n, graph, visited);
+            }
+        }
     }
 
 }

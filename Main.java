@@ -30,6 +30,8 @@ public class Main {
 
   public static void main(String[] args) {
 
+
+
     boolean graphRootFailure = false;
     boolean masterProgrammerFail = false;
     boolean numGroupsFail = false;

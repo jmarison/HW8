@@ -1,6 +1,6 @@
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Jacob Marison / 272 002
  *
  *   Note, additional comments provided throughout this source code
  *   is for educational purposes
@@ -105,6 +105,32 @@ public class Graph {
   public int findRoot() {
 
     // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME/SECTION AT TOP OF FILE
-    return -1;
-  } 
+    //printGraph();
+    //look for where the horizontal axis has no vertical points, then its a root
+    // vertical goes to horizontal
+
+    //initial thoughts:
+    //go through the linked list, if any of the values posses at least one value that != 0, then it is not a root.
+    //If it possesses more than one root, return -1.
+    int[] hasNext = new int[numVertices];
+
+    for(int i = 0; i < numVertices; i++) {
+      LinkedList<Integer> current = adjListArr[i];
+
+      for(int dest : current) {
+        hasNext[dest]++;
+      }
+    }
+    int root = -1;
+    for (int i = 0; i < numVertices; i++) {
+
+      if(hasNext[i] == 0 && root != -1) {
+        return -1;
+      } else if (hasNext[i] == 0) {
+        root = vertexValues.get(i);
+      }
+    }
+    return root;
+  }
 }
+
